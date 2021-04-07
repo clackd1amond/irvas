@@ -14,6 +14,8 @@ const modals = () => {
 			windows.forEach((modal) => {
 				modal.style.display = 'none';
 			});
+			document.body.style.overflow = '';
+			document.body.style.marginRight = '0px';
 			document.body.classList.remove('modal-open');
 		}
 
@@ -47,13 +49,31 @@ const modals = () => {
 	}
 
 	function openModal(modal) {
+		const scroll = calcScroll();
 		modal.style.display = 'block';
+		document.body.style.overflow = 'hidden';
+		document.body.style.marginRight = `${scroll}px`;
 		document.body.classList.add('modal-open');
 	}
 	function showModalByTime(selector, time) {
 		setTimeout(() => {
 			openModal(document.querySelector(selector));
 		}, time);
+	}
+
+	function calcScroll() {
+		let div = document.createElement('div');
+
+		div.style.width = '50px';
+		div.style.height = '50px';
+		div.style.overflowY = 'scroll';
+		div.style.visibility = 'hidden';
+
+		document.body.appendChild(div);
+		let scrollWidth = div.offsetWidth - div.clientWidth;
+		div.remove();
+
+		return scrollWidth;
 	}
 
 	bindModal(
